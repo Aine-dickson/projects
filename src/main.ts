@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
+import { useTheme } from '@/composables/theme'
 import router from './router'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
@@ -19,5 +20,8 @@ if (redirect) {
   sessionStorage.removeItem("redirect");
   router.replace(redirect);
 }
+
+// Initialize persisted theme early
+useTheme()
 
 app.mount('#app')

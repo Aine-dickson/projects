@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 .thin-scroll::-webkit-scrollbar{
     width: 0.5rem;
     height: 0.2rem;
@@ -13,8 +14,4 @@
 }
 .thin-scroll::-webkit-scrollbar-thumb:hover{
     background: #030303;
-}
-
-@theme {
-    --breakpoint-xs: 446px;
 }
