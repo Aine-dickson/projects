@@ -1,0 +1,1 @@
+import{_ as t,c as o,a as s,o as c}from"./index-B7Y9siVy.js";const r={},n={class:"h-full flex items-center justify-center"};function a(l,e){return c(),o("div",n,e[0]||(e[0]=[s("h1",{class:"text-4xl font-bold"},"Welcome to Projects Showcase",-1)]))}const _=t(r,[["render",a]]);export{_ as default};
