@@ -8,7 +8,7 @@ export const projects: Project[] = [
     slug: 'cashless-transport-platform',
     name: 'Cashless Transport Platform',
     tagline: 'Mobile money, offline trip ordering & settlement simulation',
-    description: 'In-browser prototype of a cashless public transport flow for East Africa: passengers top‑up via simulated mobile money providers (MTN, Airtel, card) with fee models; place trips (balance‑validated) that operators assign & start; dynamic surge fare + provider fee breakdown; offline event queue with replay; settlement batch aggregation & provider / route analytics.',
+    description: 'In-browser prototype of a cashless public transport flow for East Africa: Passengers top‑up via simulated mobile money providers (MTN, Airtel, card) with fee models, place trips (balance‑validated) that operators assign & start, dynamic surge fare + provider fee breakdown, offline event queue with replay, settlement batch aggregation & provider / route analytics.',
     highlights: [
       'Mobile money provider simulation (differential % + fixed fees + failure rate)',
       'Trip lifecycle: place → assign → start → complete / cancel (balance & fare validation)',

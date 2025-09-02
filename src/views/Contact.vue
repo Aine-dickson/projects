@@ -106,13 +106,14 @@ const handleSubmit = async () => {
                 <button
                   type="submit"
                   :disabled="sending"
+                  :class="{'opacity-60 cursor-not-allowed': sending, 'cursor-pointer': !sending}"
                   class="w-full py-2.5 rounded-md font-medium text-white bg-gradient-to-r from-indigo-500 to-fuchsia-500 hover:from-indigo-600 hover:to-fuchsia-600 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-offset-neutral-900 transition-colors"
                 >
-                  <span v-if="sending" class="inline-flex items-center gap-2">
-                    <svg class="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle class="opacity-25" cx="12" cy="12" r="10"/><path class="opacity-75" d="M4 12a8 8 0 018-8"/></svg>
-                    Sending...
-                  </span>
-                  <span v-else>Send Message</span>
+                    <span v-if="sending" class="inline-flex items-center gap-2">
+                        <svg class="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle class="opacity-25" cx="12" cy="12" r="10"/><path class="opacity-75" d="M4 12a8 8 0 018-8"/></svg>
+                        Sending...
+                    </span>
+                    <span v-else>Send Message</span>
                 </button>
                 <p v-if="status" class="text-sm mt-1" :class="status.includes('✅') ? 'text-emerald-500' : status.includes('⚠️') ? 'text-amber-500' : 'text-rose-500'">
                   {{ status }}

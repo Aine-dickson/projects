@@ -10,96 +10,96 @@
     </div>
 
     <!-- Passenger Portal -->
-  <div v-if="tab==='Passenger'" class="space-y-4">
-      <div class="flex flex-wrap items-end gap-3">
-        <div>
-          <label class="block text-[10px] uppercase tracking-wide mb-1">Passenger Name</label>
-          <input v-model="passengerName" placeholder="e.g. Amina" class="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800" />
+    <div v-if="tab==='Passenger'" class="space-y-4">
+        <div class="flex flex-wrap items-end gap-3">
+            <div>
+                <label class="block text-[10px] uppercase tracking-wide mb-1">Passenger Name</label>
+                <input v-model="passengerName" placeholder="e.g. Amina" class="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800" />
+            </div>
+            <button @click="login()" class="px-3 py-2 rounded bg-emerald-600 text-white" :disabled="!passengerName.trim()">{{ store.authPassenger ? 'Switch' : 'Login' }}</button>
+            <button v-if="store.authPassenger" @click="store.logoutPassenger()" class="px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-800">Logout</button>
+            <div class="ml-auto text-[11px]" v-if="store.authPassenger">
+                <span class="font-semibold">Wallet:</span> UGX {{ store.authPassenger.wallet.toLocaleString() }}
+            </div>
         </div>
-        <button @click="login()" class="px-3 py-2 rounded bg-emerald-600 text-white" :disabled="!passengerName.trim()">{{ store.authPassenger ? 'Switch' : 'Login' }}</button>
-        <button v-if="store.authPassenger" @click="store.logoutPassenger()" class="px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-800">Logout</button>
-        <div class="ml-auto text-[11px]" v-if="store.authPassenger">
-          <span class="font-semibold">Wallet:</span> UGX {{ store.authPassenger.wallet.toLocaleString() }}
+        <div v-if="store.authPassenger" class="space-y-3">
+            <div class="flex flex-wrap gap-2 items-end">
+                <div>
+                    <label class="block text-[10px] uppercase mb-1">Amount (UGX)</label>
+                    <input type="number" v-model.number="topupAmount" class="w-32 px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800" placeholder="Top-up" />
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase mb-1">Provider</label>
+                    <select v-model="provider" class="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                    <option>MTN Momo</option>
+                    <option>Airtel Money</option>
+                    <option>MockCard</option>
+                    </select>
+                </div>
+                <div v-if="feePreview" class="text-[11px] text-neutral-600 dark:text-neutral-400">
+                    Fee {{ feePreview.fee }} → Credit <span class="font-semibold">{{ feePreview.credited }}</span>
+                </div>
+                <button @click="doTopup" class="px-3 py-1.5 rounded bg-indigo-600 text-white" :disabled="topupAmount<=0">Top Up</button>
+            </div>
+            <div class="flex flex-wrap gap-3 items-end">
+                <div>
+                    <label class="block text-[10px] uppercase mb-1">Route</label>
+                    <select v-model="route" class="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                    <option disabled value="">Select route</option>
+                    <option v-for="r in store.routes" :key="r.name" :value="r.name">{{ r.name }}</option>
+                    </select>
+                </div>
+                <div v-if="routeEstimate" class="text-[11px] text-neutral-600 dark:text-neutral-400">
+                    Est: UGX {{ routeEstimate.estimatedFare }} <span class="ml-1" :class="routeEstimate.surgeMultiplier>1? 'text-amber-600':''">(surge x{{ routeEstimate.surgeMultiplier }})</span>
+                </div>
+                <button @click="placeTrip" class="px-3 py-1.5 rounded bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" :disabled="!route || !!store.authPassenger?.activeTripId || !canAffordEstimate">Place Trip</button>
+                <button v-if="placedOwnTrips.length" @click="cancelTrip(placedOwnTrips[0].id)" class="px-3 py-1.5 rounded bg-rose-600 text-white">Cancel</button>
+                <button v-if="activeTrip" @click="endTrip(activeTrip.id)" class="px-3 py-1.5 rounded bg-rose-500 text-white">End Trip</button>
+            </div>
+            <p v-if="route && !canAffordEstimate" class="text-rose-600 text-[11px]">Insufficient balance for estimated fare.</p>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-semibold mb-1">My Trips</h3>
+                <table class="w-full text-[11px] border-separate border-spacing-y-1">
+                    <thead class="text-neutral-500">
+                    <tr>
+                        <th class="text-left">Trip</th><th class="text-left">Route</th><th>Est</th><th>Fare</th><th>Status</th><th>Start</th><th>End</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="t in passengerTrips" :key="t.id" class="bg-white dark:bg-neutral-800">
+                        <td class="px-2 py-1 font-mono">{{ t.id }}</td>
+                        <td class="px-2 py-1">{{ t.route }}</td>
+                        <td class="px-2 py-1 text-right">UGX {{ t.fareEstimate }}</td>
+                        <td class="px-2 py-1 text-right">{{ t.fare? ('UGX '+t.fare) : '-' }}</td>
+                        <td class="px-2 py-1">
+                        <span :class="statusClass(t.status)" class="px-1.5 py-0.5 rounded">{{ t.status }}</span>
+                        </td>
+                        <td class="px-2 py-1">{{ formatTime(t.startTs) }}</td>
+                        <td class="px-2 py-1">{{ t.endTs? formatTime(t.endTs): '-' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-1">Top-Ups</h3>
+                    <table class="w-full text-[11px] border-separate border-spacing-y-1">
+                    <thead class="text-neutral-500"><tr><th>Ts</th><th>Prov</th><th>Amt</th><th>Fee</th><th>Credited</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr v-for="r in topUpHistory" :key="r.id" class="bg-white dark:bg-neutral-800">
+                        <td class="px-2 py-1">{{ formatTime(r.ts) }}</td>
+                        <td class="px-2 py-1">{{ r.provider }}</td>
+                        <td class="px-2 py-1 text-right">{{ r.amountOriginal }}</td>
+                        <td class="px-2 py-1 text-right">{{ r.fee }}</td>
+                        <td class="px-2 py-1 text-right">{{ r.amountCredited }}</td>
+                        <td class="px-2 py-1"><span :class="r.status==='failed' ? 'text-rose-600':'text-emerald-600'">{{ r.status }}</span></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
-      <div v-if="store.authPassenger" class="space-y-3">
-        <div class="flex flex-wrap gap-2 items-end">
-          <div>
-            <label class="block text-[10px] uppercase mb-1">Amount (UGX)</label>
-            <input type="number" v-model.number="topupAmount" class="w-32 px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800" placeholder="Top-up" />
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase mb-1">Provider</label>
-            <select v-model="provider" class="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800">
-              <option>MTN Momo</option>
-              <option>Airtel Money</option>
-              <option>MockCard</option>
-            </select>
-          </div>
-          <div v-if="feePreview" class="text-[11px] text-neutral-600 dark:text-neutral-400">
-            Fee {{ feePreview.fee }} → Credit <span class="font-semibold">{{ feePreview.credited }}</span>
-          </div>
-          <button @click="doTopup" class="px-3 py-1.5 rounded bg-indigo-600 text-white" :disabled="topupAmount<=0">Top Up</button>
-        </div>
-        <div class="flex flex-wrap gap-3 items-end">
-          <div>
-            <label class="block text-[10px] uppercase mb-1">Route</label>
-            <select v-model="route" class="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800">
-              <option disabled value="">Select route</option>
-              <option v-for="r in store.routes" :key="r.name" :value="r.name">{{ r.name }}</option>
-            </select>
-          </div>
-          <div v-if="routeEstimate" class="text-[11px] text-neutral-600 dark:text-neutral-400">
-            Est: UGX {{ routeEstimate.estimatedFare }} <span class="ml-1" :class="routeEstimate.surgeMultiplier>1? 'text-amber-600':''">(surge x{{ routeEstimate.surgeMultiplier }})</span>
-          </div>
-          <button @click="placeTrip" class="px-3 py-1.5 rounded bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" :disabled="!route || !!store.authPassenger?.activeTripId || !canAffordEstimate">Place Trip</button>
-          <button v-if="placedOwnTrips.length" @click="cancelTrip(placedOwnTrips[0].id)" class="px-3 py-1.5 rounded bg-rose-600 text-white">Cancel</button>
-          <button v-if="activeTrip" @click="endTrip(activeTrip.id)" class="px-3 py-1.5 rounded bg-rose-500 text-white">End Trip</button>
-        </div>
-        <p v-if="route && !canAffordEstimate" class="text-rose-600 text-[11px]">Insufficient balance for estimated fare.</p>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <h3 class="font-semibold mb-1">My Trips</h3>
-          <table class="w-full text-[11px] border-separate border-spacing-y-1">
-            <thead class="text-neutral-500">
-              <tr>
-                <th class="text-left">Trip</th><th class="text-left">Route</th><th>Est</th><th>Fare</th><th>Status</th><th>Start</th><th>End</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="t in passengerTrips" :key="t.id" class="bg-white dark:bg-neutral-800">
-                <td class="px-2 py-1 font-mono">{{ t.id }}</td>
-                <td class="px-2 py-1">{{ t.route }}</td>
-                <td class="px-2 py-1 text-right">UGX {{ t.fareEstimate }}</td>
-                <td class="px-2 py-1 text-right">{{ t.fare? ('UGX '+t.fare) : '-' }}</td>
-                <td class="px-2 py-1">
-                  <span :class="statusClass(t.status)" class="px-1.5 py-0.5 rounded">{{ t.status }}</span>
-                </td>
-                <td class="px-2 py-1">{{ formatTime(t.startTs) }}</td>
-                <td class="px-2 py-1">{{ t.endTs? formatTime(t.endTs): '-' }}</td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
-          <div>
-            <h3 class="font-semibold mb-1">Top-Ups</h3>
-            <table class="w-full text-[11px] border-separate border-spacing-y-1">
-              <thead class="text-neutral-500"><tr><th>Ts</th><th>Prov</th><th>Amt</th><th>Fee</th><th>Credited</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr v-for="r in topUpHistory" :key="r.id" class="bg-white dark:bg-neutral-800">
-                  <td class="px-2 py-1">{{ formatTime(r.ts) }}</td>
-                  <td class="px-2 py-1">{{ r.provider }}</td>
-                  <td class="px-2 py-1 text-right">{{ r.amountOriginal }}</td>
-                  <td class="px-2 py-1 text-right">{{ r.fee }}</td>
-                  <td class="px-2 py-1 text-right">{{ r.amountCredited }}</td>
-                  <td class="px-2 py-1"><span :class="r.status==='failed' ? 'text-rose-600':'text-emerald-600'">{{ r.status }}</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <p v-else class="text-neutral-500">Login or create a passenger to begin.</p>
+        <p v-else class="text-neutral-500">Login or create a passenger to begin.</p>
     </div>
 
     <!-- Driver/Conductor View -->
