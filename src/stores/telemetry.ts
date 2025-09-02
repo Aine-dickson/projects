@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { RealtimeChannel } from '@supabase/supabase-js'
-import { supabase } from '@/utils/supabase'
+// Supabase realtime temporarily disabled (all simulation is local)
+// import type { RealtimeChannel } from '@supabase/supabase-js'
+// import { supabase } from '@/utils/supabase'
 
 export interface TelemetryEvent { device_id: string; metric: string; value: number; ts: string }
 export interface MinuteAggregate { bucket_start: string; device_id: string; metric: string; count: number; avg_val: number; min_val: number; max_val: number }
@@ -22,7 +23,7 @@ export const useTelemetryStore = defineStore('telemetry', () => {
 
   const initialized = ref(false)
   const realtimeEnabled = ref(false)
-  let channel: RealtimeChannel | null = null
+  // let channel: RealtimeChannel | null = null // disabled
 
   const totalEvents = computed(() => rawEvents.value.length)
   const activeDevices = computed(() => Object.keys(deviceState.value).length)
@@ -100,31 +101,21 @@ export const useTelemetryStore = defineStore('telemetry', () => {
   }
 
   async function initRealtime() {
+    // No-op stub while Supabase integration is paused.
+    // Previous implementation left here for future reference:
+    /*
     if (initialized.value) return
+    if (!supabase) { initialized.value = true; realtimeEnabled.value = false; return }
     try {
-      const url = (supabase as any)?.rest?.url || (import.meta as any).env?.VITE_SUPABASE_URL
-      if (!url) throw new Error('Supabase env not set')
       channel = supabase.channel('telemetry-stream')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'raw_events' }, (payload) => {
-          const r = payload.new as any
-          ingestLocalBatch([{ device_id: r.device_id, metric: r.metric, value: r.value, ts: r.ts }])
-        })
-        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'device_state' }, (payload) => {
-          const r = payload.new as any
-          deviceState.value[r.device_id] = {
-            device_id: r.device_id,
-            last_event_ts: r.last_event_ts,
-            last_values: r.last_values || {},
-            status: r.status
-          }
-        })
-        .subscribe((status) => {
-          realtimeEnabled.value = status === 'SUBSCRIBED'
-        })
-    } catch (e) {
-      realtimeEnabled.value = false
-    }
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'raw_events' }, (payload) => { ... })
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'device_state' }, (payload) => { ... })
+        .subscribe((status) => { realtimeEnabled.value = status === 'SUBSCRIBED' })
+    } catch { realtimeEnabled.value = false }
     initialized.value = true
+    */
+    initialized.value = true
+    realtimeEnabled.value = false
   }
 
   function clearAll() {
