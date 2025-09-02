@@ -6,12 +6,12 @@
                     <h1 class="text-4xl font-bold tracking-tight">Project Showcase</h1>
                     <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">Curated selection of projects demonstrating architecture design, performance focus, DX improvements, and product impact. Filter and explore details below.</p>
                 </div>
-                        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                            <TagFilter v-model="activeTag" />
-                            <label class="flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-300 select-none cursor-pointer self-start md:self-auto">
-                                <input type="checkbox" v-model="hidePrototypes" class="accent-neutral-900" /> Hide prototypes
-                            </label>
-                        </div>
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <TagFilter v-model="activeTag" />
+                    <label class="flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-300 select-none cursor-pointer self-start md:self-auto">
+                        <input type="checkbox" v-model="hidePrototypes" class="accent-neutral-900" /> Hide prototypes
+                    </label>
+                </div>
             </section>
             <section>
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

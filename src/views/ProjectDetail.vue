@@ -78,7 +78,7 @@
               <a :href="d.path" target="_blank" rel="noopener" class="underline">{{ d.label }}</a>
             </li>
           </ul>
-          <p class="text-xs text-neutral-500 mt-2">(Ensure PDFs are placed in <code>public/docs</code> with matching filenames.)</p>
+          <!-- <p class="text-xs text-neutral-500 mt-2">(Ensure PDFs are placed in <code>public/docs</code> with matching filenames.)</p> -->
         </div>
       </section>
       

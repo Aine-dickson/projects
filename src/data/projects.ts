@@ -2,6 +2,98 @@ import type { Project } from '@/types/project'
 
 // NOTE: Replace placeholder content with your real projects. Keep slugs stable once shared.
 export const projects: Project[] = [
+    // === Added from projects_overview PDFs (prototype summaries) ===
+  {
+    id: 'p6',
+    slug: 'cashless-transport-platform',
+    name: 'Cashless Transport Platform',
+    tagline: 'Mobile money, offline trip ordering & settlement simulation',
+    description: 'In-browser prototype of a cashless public transport flow for East Africa: passengers top‑up via simulated mobile money providers (MTN, Airtel, card) with fee models; place trips (balance‑validated) that operators assign & start; dynamic surge fare + provider fee breakdown; offline event queue with replay; settlement batch aggregation & provider / route analytics.',
+    highlights: [
+      'Mobile money provider simulation (differential % + fixed fees + failure rate)',
+      'Trip lifecycle: place → assign → start → complete / cancel (balance & fare validation)',
+      'Dynamic surge pricing (peak hour multiplier) + fare/fee breakdown UI',
+      'Offline-first event queue (pending → processed replay) for top-ups & trip events',
+      'Settlement batch aggregation (gross / provider fees / net) + provider & route KPIs'
+    ],
+    responsibilities: [
+      'Engineered Pinia store modeling events, trips, receipts & settlements',
+      'Implemented provider fee algorithms + wallet credit & failure simulation',
+      'Built passenger / driver / admin multi-role interfaces (ordering, assignment, KPIs)',
+      'Added surge fare estimation & balance gating before trip placement',
+      'Designed settlement aggregation + provider statistics reporting'
+    ],
+    stack: ['Vue 3', 'TypeScript', 'Pinia', 'TailwindCSS', 'Supabase (planned)', 'Edge Functions (planned)'],
+    tags: [ { label: 'Payments', color: 'emerald-600' } ],
+    links: [],
+    documents: [ { label: 'Concept PDF', path: '/docs/Cashless-Transport.pdf' } ],
+    featured: false,
+    visibility: 'prototype',
+    startDate: '2025-04-01',
+    endDate: 'present',
+  order: 6,
+  supportsDemo: true
+  },
+  {
+    id: 'p7',
+    slug: 'fleet-manager',
+    name: 'Fleet Manager',
+    tagline: 'Interactive route-aware fleet tracking & geofence simulation',
+    description: 'Rich in-browser fleet simulation: Uganda‑based map, predefined + user‑drawn routes, driver & route–gated movement (no drift when unassigned), editable geofences with real‑time entry/exit alerts, path history, clustering, ETAs, and CSV export. Backend (Supabase realtime & RLS) planned for persistence.',
+    highlights: [
+      'Route drawing & assignment with live progress + ETA/distance',
+      'Driver + route gating: metrics only update while truly “in service”',
+      'Editable circular geofences (drag center & radius) with alerts',
+      'Per‑vehicle path history & colored polylines (Uganda focus)',
+      'Lightweight marker clustering & CSV export (vehicles / alerts)'
+    ],
+    responsibilities: [
+      'Designed simulation engine (movement interpolation & gating)',
+      'Implemented custom route authoring & persistence layer',
+      'Built geofence editing (drag/resize) & alert evaluation loop',
+      'Added ETA/distance metrics + path history & clustering logic',
+      'Planned Supabase realtime & RLS integration roadmap'
+    ],
+    stack: ['Vue 3', 'TypeScript', 'Pinia', 'Leaflet', 'TailwindCSS', 'Supabase (planned)'],
+    tags: [  { label: 'Geospatial', color: 'lime-500' } ],
+    links: [],
+    documents: [ { label: 'Overview PDF', path: '/docs/Fleet-Manager.pdf' } ],
+    featured: false,
+    visibility: 'prototype',
+    startDate: '2025-04-10',
+    endDate: 'present',
+  order: 7,
+  supportsDemo: true
+  },
+  {
+    id: 'p8',
+    slug: 'telemetry-pipeline',
+    name: 'Telemetry Pipeline',
+    tagline: 'Unified ingest & enrichment for device metrics',
+    description: 'Prototype ingestion + enrichment pipeline: devices push batched metrics; an edge function validates, enriches (derive deltas, health flags), and stores summaries + raw logs for future analytics.',
+    highlights: [
+      'Batch validation & partial accepted error reporting',
+      'Derived metric enrichment (delta, rate, status flag)',
+      'Partitioned table strategy (by month) planned for scale'
+    ],
+    responsibilities: [
+      'Auth & channel design for device API keys',
+      'Edge enrichment function (delta & status computation)',
+      'Initial performance profiling & index selection'
+    ],
+    stack: ['Vue 3', 'Supabase', 'Edge Functions', 'TypeScript'],
+    tags: [ { label: 'Data', color: 'amber-500' } ],
+    links: [],
+    documents: [ { label: 'Design PDF', path: '/docs/Telementry.pdf' } ],
+    featured: false,
+    visibility: 'prototype',
+    startDate: '2025-04-15',
+    endDate: 'present',
+  order: 8,
+  supportsDemo: true
+  },
+
+  // === Original projects ===
   {
     id: 'p1',
     slug: 'realtime-iot-dashboard',
@@ -143,108 +235,25 @@ export const projects: Project[] = [
   order: 5,
   supportsDemo: true
   },
-  // === Added from projects_overview PDFs (prototype summaries) ===
-  {
-    id: 'p6',
-    slug: 'cashless-transport-platform',
-    name: 'Cashless Transport Platform',
-    tagline: 'Mobile money, offline trip ordering & settlement simulation',
-    description: 'In-browser prototype of a cashless public transport flow for East Africa: passengers top‑up via simulated mobile money providers (MTN, Airtel, card) with fee models; place trips (balance‑validated) that operators assign & start; dynamic surge fare + provider fee breakdown; offline event queue with replay; settlement batch aggregation & provider / route analytics.',
-    highlights: [
-      'Mobile money provider simulation (differential % + fixed fees + failure rate)',
-      'Trip lifecycle: place → assign → start → complete / cancel (balance & fare validation)',
-      'Dynamic surge pricing (peak hour multiplier) + fare/fee breakdown UI',
-      'Offline-first event queue (pending → processed replay) for top-ups & trip events',
-      'Settlement batch aggregation (gross / provider fees / net) + provider & route KPIs'
-    ],
-    responsibilities: [
-      'Engineered Pinia store modeling events, trips, receipts & settlements',
-      'Implemented provider fee algorithms + wallet credit & failure simulation',
-      'Built passenger / driver / admin multi-role interfaces (ordering, assignment, KPIs)',
-      'Added surge fare estimation & balance gating before trip placement',
-      'Designed settlement aggregation + provider statistics reporting'
-    ],
-    stack: ['Vue 3', 'TypeScript', 'Pinia', 'TailwindCSS', 'Supabase (planned)', 'Edge Functions (planned)'],
-    tags: [ { label: 'Transport', color: 'orange-500' }, { label: 'Payments', color: 'emerald-600' }, { label: 'Offline', color: 'slate-500' } ],
-    links: [],
-    documents: [ { label: 'Concept PDF', path: '/docs/Cashless-Transport.pdf' } ],
-    featured: false,
-    visibility: 'prototype',
-    startDate: '2025-04-01',
-    endDate: 'present',
-  order: 6,
-  supportsDemo: true
-  },
-  {
-    id: 'p7',
-    slug: 'fleet-manager',
-    name: 'Fleet Manager',
-    tagline: 'Interactive route-aware fleet tracking & geofence simulation',
-    description: 'Rich in-browser fleet simulation: Uganda‑based map, predefined + user‑drawn routes, driver & route–gated movement (no drift when unassigned), editable geofences with real‑time entry/exit alerts, path history, clustering, ETAs, and CSV export. Backend (Supabase realtime & RLS) planned for persistence.',
-    highlights: [
-      'Route drawing & assignment with live progress + ETA/distance',
-      'Driver + route gating: metrics only update while truly “in service”',
-      'Editable circular geofences (drag center & radius) with alerts',
-      'Per‑vehicle path history & colored polylines (Uganda focus)',
-      'Lightweight marker clustering & CSV export (vehicles / alerts)'
-    ],
-    responsibilities: [
-      'Designed simulation engine (movement interpolation & gating)',
-      'Implemented custom route authoring & persistence layer',
-      'Built geofence editing (drag/resize) & alert evaluation loop',
-      'Added ETA/distance metrics + path history & clustering logic',
-      'Planned Supabase realtime & RLS integration roadmap'
-    ],
-    stack: ['Vue 3', 'TypeScript', 'Pinia', 'Leaflet', 'TailwindCSS', 'Supabase (planned)'],
-    tags: [ { label: 'Fleet', color: 'teal-500' }, { label: 'Geospatial', color: 'lime-500' }, { label: 'Simulation', color: 'purple-500' } ],
-    links: [],
-    documents: [ { label: 'Overview PDF', path: '/docs/Fleet-Manager.pdf' } ],
-    featured: false,
-    visibility: 'prototype',
-    startDate: '2025-04-10',
-    endDate: 'present',
-  order: 7,
-  supportsDemo: true
-  },
-  {
-    id: 'p8',
-    slug: 'telemetry-pipeline',
-    name: 'Telemetry Pipeline',
-    tagline: 'Unified ingest & enrichment for device metrics',
-    description: 'Prototype ingestion + enrichment pipeline: devices push batched metrics; an edge function validates, enriches (derive deltas, health flags), and stores summaries + raw logs for future analytics.',
-    highlights: [
-      'Batch validation & partial accepted error reporting',
-      'Derived metric enrichment (delta, rate, status flag)',
-      'Partitioned table strategy (by month) planned for scale'
-    ],
-    responsibilities: [
-      'Auth & channel design for device API keys',
-      'Edge enrichment function (delta & status computation)',
-      'Initial performance profiling & index selection'
-    ],
-    stack: ['Vue 3', 'Supabase', 'Edge Functions', 'TypeScript'],
-    tags: [ { label: 'Telemetry', color: 'cyan-500' }, { label: 'Data', color: 'amber-500' } ],
-    links: [],
-    documents: [ { label: 'Design PDF', path: '/docs/Telementry.pdf' } ],
-    featured: false,
-    visibility: 'prototype',
-    startDate: '2025-04-15',
-    endDate: 'present',
-  order: 8,
-  supportsDemo: true
-  }
+  
 ]
 
 export function getProjectBySlug (slug: string) {
   return projects.find(p => p.slug === slug)
 }
 
-export function listProjects (opts?: { featuredOnly?: boolean, includePrototypes?: boolean, includeHidden?: boolean }) {
+export function listProjects (opts?: { featuredOnly?: boolean, includePrototypes?: boolean, includeHidden?: boolean, sortBy?: 'order' | 'name' }) {
   let list = [...projects]
   if (!opts?.includeHidden) list = list.filter(p => p.visibility !== 'hidden')
   if (!opts?.includePrototypes) list = list.filter(p => p.visibility !== 'prototype')
   if (opts?.featuredOnly) list = list.filter(p => p.featured)
-  return list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  if (opts?.sortBy === 'order') {
+    list = list.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  } else if (opts?.sortBy === 'name') {
+    list = list.slice().sort((a, b) => a.name.localeCompare(b.name))
+  }
+  // Default: respect declaration order
+  return list
 }
 
 export function listTags () {
