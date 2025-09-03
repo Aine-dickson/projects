@@ -94,39 +94,39 @@ export const projects: Project[] = [
   },
 
   // === Original projects ===
-  {
-    id: 'p1',
-    slug: 'realtime-iot-dashboard',
-    name: 'Realtime IoT Dashboard',
-    tagline: 'Streaming telemetry & anomaly alerts for 1K+ devices',
-    description: `A low-latency dashboard ingesting MQTT device telemetry, normalizing it through Supabase Edge Functions, and visualizing metrics with live charts. Implements role-based access and offline-friendly caching.`,
-    highlights: [
-      'Sub-2s end-to-end latency across 1,200 simulated devices',
-      'Edge function transformation & alert rule engine',
-      'Responsive, accessible data visualization components'
-    ],
-    responsibilities: [
-      'Architected data flow & storage schema',
-      'Implemented WebSocket/MQTT bridge & reconnection logic',
-      'Designed alert evaluation engine'
-    ],
-    stack: ['Vue 3', 'TypeScript', 'Supabase', 'Edge Functions', 'TailwindCSS'],
-    tags: [
-      { label: 'IoT', color: 'cyan-500' },
-      { label: 'Realtime', color: 'emerald-500' }
-    ],
-    links: [
-      { label: 'GitHub', url: 'https://github.com/your-org/realtime-dashboard', kind: 'repo' }
-    ],
-    featured: true,
-    visibility: 'public',
-    startDate: '2024-03-01',
-    endDate: 'present',
-    heroImage: '/iot.png',
-    gallery: ['/iot.png'],
-  order: 1,
-  supportsDemo: true
-  },
+//   {
+//     id: 'p1',
+//     slug: 'realtime-iot-dashboard',
+//     name: 'Realtime IoT Dashboard',
+//     tagline: 'Streaming telemetry & anomaly alerts for 1K+ devices',
+//     description: `A low-latency dashboard ingesting MQTT device telemetry, normalizing it through Supabase Edge Functions, and visualizing metrics with live charts. Implements role-based access and offline-friendly caching.`,
+//     highlights: [
+//       'Sub-2s end-to-end latency across 1,200 simulated devices',
+//       'Edge function transformation & alert rule engine',
+//       'Responsive, accessible data visualization components'
+//     ],
+//     responsibilities: [
+//       'Architected data flow & storage schema',
+//       'Implemented WebSocket/MQTT bridge & reconnection logic',
+//       'Designed alert evaluation engine'
+//     ],
+//     stack: ['Vue 3', 'TypeScript', 'Supabase', 'Edge Functions', 'TailwindCSS'],
+//     tags: [
+//       { label: 'IoT', color: 'cyan-500' },
+//       { label: 'Realtime', color: 'emerald-500' }
+//     ],
+//     links: [
+//       { label: 'GitHub', url: 'https://github.com/your-org/realtime-dashboard', kind: 'repo' }
+//     ],
+//     featured: true,
+//     visibility: 'public',
+//     startDate: '2024-03-01',
+//     endDate: 'present',
+//     heroImage: '/iot.png',
+//     gallery: ['/iot.png'],
+//   order: 1,
+//   supportsDemo: true
+//   },
   {
     id: 'p2',
     slug: 'fintech-risk-engine',
